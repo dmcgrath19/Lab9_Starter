@@ -87,7 +87,17 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "f1380ee692114a37b87e9b64ce34a815"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+                        
+  <script>
+    TrackJS.track('Testing TrackJS!');
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -102,6 +112,111 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+    // Console log button
+    errorBtns[0].addEventListener('click', e => {
+      console.log("You pressed the console log button.");
+    });
+    errorBtns[1].addEventListener('click', e => {
+      console.error("Apologies, someone spilled coffee on the server.");
+    });
+    errorBtns[2].addEventListener('click', e => {
+      console.count();
+    });
+    errorBtns[3].addEventListener('click', e => {
+      console.warn("We have been trying to contact you regarding your car's extended warranty.");
+    });
+    errorBtns[4].addEventListener('click', e => {
+      const firstNum = document.querySelector('#first-num').value;
+      const secondNum = document.querySelector('#second-num').value;
+      const reason = "First number isn't bigger than second number.";
+      console.assert(firstNum>secondNum, {firstNum, secondNum, reason});
+    });
+    errorBtns[5].addEventListener('click', e => {
+      console.clear();
+    });
+    errorBtns[6].addEventListener('click', e => {
+      console.dir(document.head);
+    });
+    errorBtns[7].addEventListener('click', e => {
+      console.dirxml(document);
+    });
+    errorBtns[8].addEventListener('click', e => {
+      console.group();
+    });
+    errorBtns[9].addEventListener('click', e => {
+      console.groupEnd();
+    });
+    errorBtns[10].addEventListener('click', e => {
+      console.table([
+        {
+          human: 'human',
+          centaur: 'centaur',
+        },
+        {
+          human: 'centaur',
+          centaur: 'horse',
+        }
+      ]);
+    });
+    errorBtns[11].addEventListener('click', e => {
+      console.time();
+    });
+    errorBtns[12].addEventListener('click', e => {
+      console.timeEnd();
+    });
+    errorBtns[13].addEventListener('click', e => {
+     console.trace();
+    });
+    errorBtns[14].addEventListener('click', e => {
+      throw new Error("Global error");
+    });
+    window.onerror = function(message, url, line, col, error) {
+      console.log(`${message}\n At ${line}:${col} of ${url}`);
+    };    let recipe = "{ bad recipe json }";
+    try {
+      let user = JSON.parse(recipe);
+    } 
+    catch (err) {
+      throw err;
+    } 
+    finally {
+      console.log("Exited try/catch block.");
+    }
+    class ValidationError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "WeHaveNoIdeaHowYouBrokeThisError";
+      }
+    }
+
+    function readRecipe(json) {
+      let recipe = JSON.parse(json);
+      console.log(recipe);
+      if (!recipe.ingredient) {
+        throw new ValidationError("No field: ingredient");
+      }
+      if (!recipe.time) {
+        throw new ValidationError("No field: time");
+      }
+      
+      return recipe;
+    }
+
+    try {
+      let recipe = readRecipe('{ "ingredient": apple }');
+    } 
+    catch (err) {
+      if (err instanceof ValidationError) {
+        alert("Invalid data: " + err.message);
+      } 
+      else if (err instanceof SyntaxError) { 
+        alert("JSON Syntax Error: " + err.message);
+      } 
+      else {
+        throw err;
+      }
+    }
+
   </script>
 </body>
 
